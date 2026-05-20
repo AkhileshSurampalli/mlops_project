@@ -21,7 +21,7 @@ class DataValidation:
         """
         try:
             self.data_ingestion_artifact = data_ingestion_artifact
-            self.data_validaiton_config  = data_validation_config
+            self.data_validation_config  = data_validation_config
             self._schema_config = read_yaml_file(file_path=SCHEMA_FILE_PATH)
         except Exception as e:
             raise MyException(e, sys)
@@ -35,7 +35,7 @@ class DataValidation:
         On Failure: Write an exception log and then raise an exception
         """
         try:
-            status = len(dataFrame.columns) == len(self._schema_config["columns"])
+            status = len(dataframe.columns) == len(self._schema_config["columns"])
             logging.info(f"Is required column present: [{status}]")
             return status
         except Exception as e:
