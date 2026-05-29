@@ -1,30 +1,23 @@
-# mlops_project
+MLOps_Project:
 A robust pipeline for managing vehicle insurance data. This project deep dives into building and deploying a machine learning pipeline for real-world data management.
-
 Project Setup and Structure:
 1) Project Template: The template.py creates the initial project template, which includes the required folder structure and placeholder files.
-
 Package Management:
 1) Create setup.py and pyproject.toml files to import local packages.
-
 Virtual Environment and Dependencies:
 1) A virtual environment created to install dependencies from requirements.txt:
    conda create -n vehicle python=3.10 -y
    conda activate vehicle
    pip install -r requirements.txt
-
 MongoDB Atlas Configuration:
 1) Created a new project and set up a free M0 cluster and allowed the access from any IP address (0.0.0.0/0)
-   
 Pushing Data to Mongo DB:
 1) Created a folder named notebook, added the dataset, and create a notebook file mongoDB_demo.ipynb
 2) Used the notebook to push data to the MongoDB database.
 3) Verify the data in MongoDB Atlas under Database > Browse Collections.
-
 Logging, Exception Handling, and EDA
 1) Created a test file called demo.py to create logging and exception handling modules.
 2) Analyzed and engineered features in the EDA and Feature Engg notebook for further processing in the pipeline.
-
 Data Ingestion Pipeline:
 1) Define MongoDB connection funcitons in configuration.mongo_db_connections.py
 2) Develop data ingestion components in the data_access and components.data_ingestion.py files to fetch and transform data.
@@ -35,14 +28,47 @@ Data Ingestion Pipeline:
    export MONGODB_URL="mongodb+srv://<username>:<password>...."
    # For Powershell
    $env:MONGODB_URL = "mongodb+srv://<username>:<password>...."
-
-Data validation, Transformation & Model Training
+Data Validation, Transformation & Model Training:
 Data Validation:
 1) Define schema in config.schema.yaml and implement data validation funcitons in utils.main_utils.py
 Data transformation:
 1) Implement data transformation logic in components.data_transformation.py and create estimator.py in the entity folder.
 Model Training:
 1) Define and implement model training steps in components.model_trainer.py using code from estimator.py
+==========================================================
+AWS Setup for Model Evaluation & Deployment:
+1) AWS Setup
+   a) Created an IAM user and set AWS credentials as environment variables
+   b) Configured S3 Bucker and added access keys in constants.__init__.py
+2) Model Evaluation and Pushing to S3
+   a) Created an S3 bucket named my-model-mlopsproj in the us-east-1 region.
+   b) Developed the code to push/pull models to/from the S3 bucket in src.aws_storage and                 entity/s3_estimator.py
+==========================================================
+Model Evaluation & Model Pusher
+   a) Implemented model evaluation and deployment components
+   b) Created Prediction Pipeline and set up app.py for API integration
+Static and Template Directory
+   a) Added static and template directories for web UI
+
+
+
+CI/CD setup with Docker, GitHub Acitons, and AWS
+Docker and GitHub Actions
+1) Created Dockerfile and .dockerignore
+2) Set up GitHub Actions with AWS authentication by creating secrets in GitHub for
+     a) AWS_ACCESS_KEY_ID
+     b) AWS_SECRET_ACCESS_KEY
+     c) AWS_DEFAULT_REGION
+     d) ECR_REPO
+AWS EC2 and ECR
+1) An EC2 instance got setup for deployment.
+2) Installed Docker on the EC2 machine.
+3) Connected EC2 as self-hosted runner on GitHub
+
+==================================================================
+Final Steps
+1) Open the 5000 port on the EC2 instance.
+2) Access the deployed app by visiting http://<public_ip>:5000
 
 
 
