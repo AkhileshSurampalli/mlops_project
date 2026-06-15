@@ -93,7 +93,7 @@ class DataTransformation:
         logging.info("Renaming specific columns and casting to int")
         df = df.rename(
             columns={
-                "Vehicle_Age_1< 1 Year": "Vehicle_Age_lt_1_Year",
+                "Vehicle_Age_< 1 Year": "Vehicle_Age_lt_1_Year",
                 "Vehicle_Age_> 2 Years": "Vehicle_Age_gt_2_Years"
             }
         )

@@ -2,7 +2,7 @@
 
 A production-ready end-to-end MLOps pipeline for managing, training, evaluating, and deploying machine learning models using vehicle insurance data.
 
-This project demonstrates how to build a scalable machine learning system with complete lifecycle management including:
+This project is developed to design a scalable machine learning system with complete lifecycle management including:
 
 * Data ingestion from MongoDB Atlas
 * Data validation and transformation
@@ -58,7 +58,7 @@ AWS S3 Model Registry
 Prediction Pipeline
       │
       ▼
-Flask API
+Fast API
       │
       ▼
 Docker Container
@@ -471,6 +471,3 @@ This project is licensed under the MIT License.
 
 ---
 
-# 👨‍💻 Author
-
-Developed as part of an end-to-end MLOps learning and deployment project focused on real-world machine learning infrastructure and automation.
