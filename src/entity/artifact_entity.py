@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List, Optional
 
 @dataclass
 
@@ -40,3 +41,16 @@ class ModelEvaluationArtifact:
 class ModelPusherArtifact:
     bucket_name:str
     s3_model_path:str
+
+@dataclass
+class DataDriftArtifact:
+    drift_detected: bool
+    drifted_features: List[str]
+    drift_report_file_path: str
+
+@dataclass
+class ModelMonitoringArtifact:
+    data_drift_artifact: Optional[DataDriftArtifact]
+    current_f1_score: Optional[float]
+    retraining_triggered: bool
+    reason: str

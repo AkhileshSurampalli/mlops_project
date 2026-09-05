@@ -70,6 +70,16 @@ MODEL_EVALUATION_CHANGED_THRESHOLD_SCORE: float = 0.02
 MODEL_BUCKET_NAME = "my-model-mlopsproj-akhi-vik"
 MODEL_PUSHER_S3_KEY = "model-registry"
 
+"""
+Model Monitoring / Data Drift related constants
+"""
+REFERENCE_DATA_FILE_NAME: str = "reference_data.csv"
+MODEL_MONITORING_F1_THRESHOLD: float = 0.87
+DATA_DRIFT_KS_PVALUE_THRESHOLD: float = 0.05
+DATA_DRIFT_FEATURE_PROPORTION_THRESHOLD: float = 0.3
+DATA_DRIFT_REPORT_FILE_NAME: str = "drift_report.yaml"
+DATA_DRIFT_DIR_NAME: str = "data_drift"
+
 
 APP_HOST = "0.0.0.0"
 APP_PORT = 5000

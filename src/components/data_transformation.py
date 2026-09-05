@@ -12,6 +12,7 @@ from src.entity.artifact_entity import DataTransformationArtifact, DataIngestion
 from src.exception import MyException
 from src.logger import logging
 from src.utils.main_utils import save_object, save_numpy_array_data, read_yaml_file
+from src.utils.feature_engineering import apply_manual_feature_engineering
 
 class DataTransformation:
     def __init__(self, data_ingestion_artifact: DataIngestionArtifact,
@@ -69,47 +70,6 @@ class DataTransformation:
             logging.exception("Exception occured in get_data_transformer_object method of DataTransformation class")
             raise MyException(e, sys) from e
         
-    def _map_gender_column(self, df):
-        """
-        Map gender column to 0 for Female and 1 for Male
-        """
-        logging.info("Mapping 'Gender' column to binary values")
-        df['Gender'] = df['Gender'].map({'Female': 0, 'Male': 1}).astype(int)
-
-        return df
-
-    def _create_dummy_columns(self, df):
-        """
-        create dummy variables for categorical features
-        """
-        logging.info("Creating dummy variables for categorical features")
-        df = pd.get_dummies(df, drop_first=True)
-        return df
-    
-    def _rename_columns(self, df):
-        """
-        Rename specific columns and ensure integer types for dummy columns
-        """
-        logging.info("Renaming specific columns and casting to int")
-        df = df.rename(
-            columns={
-                "Vehicle_Age_< 1 Year": "Vehicle_Age_lt_1_Year",
-                "Vehicle_Age_> 2 Years": "Vehicle_Age_gt_2_Years"
-            }
-        )
-        for col in ["Vehicle_Age_lt_1_Year", "Vehicle_Age_gt_2_Years", "Vehicle_Damage_Yes"]:
-            if col in df.columns:
-                df[col] = df[col].astype('int')
-        return df
-    
-    def _drop_id_column(self, df):
-        """ Drop the 'id' column if it exists"""
-        logging.info("Dropping 'id' columns")
-        drop_col = self._schema_config['drop_columns']
-        if drop_col in df.columns:
-            df = df.drop(drop_col, axis=1)
-        return df
-    
     def initiate_data_transformation(self) -> DataTransformationArtifact:
         """
         Initiates the data transformation component for the pipeline.
@@ -132,15 +92,8 @@ class DataTransformation:
             logging.info("Input and Target cols defined for both train and test df.")
 
             # Apply custom transformations in specified sequence
-            input_feature_train_df = self._map_gender_column(input_feature_train_df)
-            input_feature_train_df = self._drop_id_column(input_feature_train_df)
-            input_feature_train_df = self._create_dummy_columns(input_feature_train_df)
-            input_feature_train_df = self._rename_columns(input_feature_train_df)
-
-            input_feature_test_df = self._map_gender_column(input_feature_test_df)
-            input_feature_test_df = self._drop_id_column(input_feature_test_df)
-            input_feature_test_df = self._create_dummy_columns(input_feature_test_df)
-            input_feature_test_df = self._rename_columns(input_feature_test_df)
+            input_feature_train_df = apply_manual_feature_engineering(input_feature_train_df, self._schema_config)
+            input_feature_test_df = apply_manual_feature_engineering(input_feature_test_df, self._schema_config)
             logging.info("Custom transformations applied to train and test data")
 
             logging.info("Starting data transformation")

@@ -12,6 +12,7 @@ from typing import Optional
 from src.constants import APP_HOST, APP_PORT
 from src.pipline.prediction_pipeline import VehicleData, VehicleDataClassifier
 from src.pipline.training_pipeline import TrainPipeline
+from src.components.model_monitoring import ModelMonitor
 
 # Initialize FastAPI application
 app = FastAPI()
@@ -97,6 +98,26 @@ async def trainRouteClient():
         train_pipeline = TrainPipeline()
         train_pipeline.run_pipeline()
         return Response("Training successful!!!")
+
+    except Exception as e:
+        return Response(f"Error Occurred! {e}")
+
+# Route to check data drift and the production model's F1 score, retraining automatically if needed
+@app.get("/monitor")
+async def monitorRouteClient():
+    """
+    Endpoint to run a data-drift and model-performance check, triggering
+    retraining automatically if drift is detected or F1 falls below threshold.
+    """
+    try:
+        result = ModelMonitor().run_monitoring()
+        drift_detected = result.data_drift_artifact.drift_detected if result.data_drift_artifact else "N/A (no reference data yet)"
+        return Response(
+            f"Monitoring complete. Drift detected: {drift_detected}. "
+            f"Current F1: {result.current_f1_score}. "
+            f"Retraining triggered: {result.retraining_triggered}. "
+            f"Reason: {result.reason}"
+        )
 
     except Exception as e:
         return Response(f"Error Occurred! {e}")

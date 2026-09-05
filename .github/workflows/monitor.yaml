@@ -1,0 +1,14 @@
+name: Scheduled Model Monitoring
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  check-drift-and-retrain:
+    runs-on: self-hosted
+
+    steps:
+      - name: Trigger monitoring endpoint
+        run: curl -f http://localhost:5000/monitor

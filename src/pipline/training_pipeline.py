@@ -113,13 +113,15 @@ class TrainPipeline:
         except Exception as e:
             raise MyException(e, sys)
 
-    def start_model_pusher(self, model_evaluation_artifact: ModelEvaluationArtifact) -> ModelPusherArtifact:
+    def start_model_pusher(self, model_evaluation_artifact: ModelEvaluationArtifact,
+                           data_ingestion_artifact: DataIngestionArtifact) -> ModelPusherArtifact:
         """
         This method of TrainPipeline class is responsible for starting model pushing
         """
         try:
             model_pusher = ModelPusher(model_evaluation_artifact=model_evaluation_artifact,
-                                       model_pusher_config=self.model_pusher_config
+                                       model_pusher_config=self.model_pusher_config,
+                                       data_ingestion_artifact=data_ingestion_artifact
                                        )
             model_pusher_artifact = model_pusher.initiate_model_pusher()
             return model_pusher_artifact
@@ -141,7 +143,8 @@ class TrainPipeline:
             if not model_evaluation_artifact.is_model_accepted:
                 logging.info(f"Model not accepted.")
                 return None
-            model_pusher_artifact = self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact)
+            model_pusher_artifact = self.start_model_pusher(model_evaluation_artifact=model_evaluation_artifact,
+                                                            data_ingestion_artifact=data_ingestion_artifact)
             
         except Exception as e:
             raise MyException(e, sys)

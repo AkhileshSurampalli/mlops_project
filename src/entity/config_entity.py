@@ -62,8 +62,20 @@ class ModelEvaluationConfig:
 class ModelPusherConfig:
     bucket_name: str = MODEL_BUCKET_NAME
     s3_model_key_path: str = MODEL_FILE_NAME
+    s3_reference_data_key: str = REFERENCE_DATA_FILE_NAME
 
 @dataclass
 class VehiclePredictorConfig:
     model_file_path: str = MODEL_FILE_NAME
     model_bucket_name: str = MODEL_BUCKET_NAME
+
+@dataclass
+class ModelMonitoringConfig:
+    bucket_name: str = MODEL_BUCKET_NAME
+    s3_model_key_path: str = MODEL_FILE_NAME
+    s3_reference_data_key: str = REFERENCE_DATA_FILE_NAME
+    ks_pvalue_threshold: float = DATA_DRIFT_KS_PVALUE_THRESHOLD
+    drift_proportion_threshold: float = DATA_DRIFT_FEATURE_PROPORTION_THRESHOLD
+    f1_threshold: float = MODEL_MONITORING_F1_THRESHOLD
+    drift_report_file_path: str = os.path.join(training_pipeline_config.artifact_dir, DATA_DRIFT_DIR_NAME,
+                                                DATA_DRIFT_REPORT_FILE_NAME)
